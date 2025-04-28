@@ -1,14 +1,18 @@
+import os
 from huggingface_hub import InferenceClient
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 client = InferenceClient(
 	provider="nebius",
-	api_key="some key"
+	api_key=os.getenv("HF_API_KEY")
 )
 
 messages = [
 	{
 		"role": "user",
-		"content": "How many 'G's in 'huggingface'?"
+		"content": "Siapa presiden ke 3 indonesia?"
 	}
 ]
 

@@ -1,57 +1,33 @@
 from agents import Agent, Runner, GuardrailFunctionOutput, InputGuardrail
 from src.llm_groq import groq_model, model_settings
-from src.models import HomeworkOutput
+from src.history_agent import history_tutor_agent
+from src.math_agent import math_tutor_agent
+from src.guardrail import homework_guardrail
 
-
-history_tutor_agent = Agent(
-    name="History Tutor",
-    model=groq_model,
-    model_settings=model_settings,
-    handoff_description="Specialist agent for historical questions",
-    instructions="You provide assistance with historical queries. Explain important events and context clearly.",
+TRIAGENT_INSTRUCTION = (
+    "You determine which agent to use based on the user's homework question. "
+    "If the question pertains to historical events or context, hand off to the History Tutor. "
+    "If the question involves math problems, hand off to the Math Tutor. "
+    "Ensure clarity in your decision-making process to provide the best assistance."
 )
 
-math_tutor_agent = Agent(
-    name="Math Tutor",
-    model=groq_model,
-    model_settings=model_settings,
-    handoff_description="Specialist agent for math questions",
-    instructions="You provide help with math problems. Explain your reasoning at each step and include examples",
-)
-
-guardrail_agent = Agent(
-    name="Guardrail check",
-    instructions="Check if the user is asking about homework.",
-    output_type=HomeworkOutput,
-    model=groq_model,
-    model_settings=model_settings,
-)
-
-triage_agent = Agent(
-    name="Triage Agent",
-    model=groq_model,
-    model_settings=model_settings,
-    instructions="You determine which agent to use based on the user's homework question",
-    handoffs=[history_tutor_agent, math_tutor_agent]
-)
-
-
-async def homework_guardrail(ctx, agent, input_data):
-    result = await Runner.run(guardrail_agent, input_data, context=ctx.context)
-    final_output = result.final_output_as(HomeworkOutput)
-    return GuardrailFunctionOutput(
-        output_info=final_output,
-        tripwire_triggered=not final_output.is_homework,
-    )
-
-# masih error
 # triage_agent = Agent(
 #     name="Triage Agent",
-#     instructions="You determine which agent to use based on the user's homework question",
-#     handoffs=[history_tutor_agent, math_tutor_agent],
 #     model=groq_model,
 #     model_settings=model_settings,
-#     input_guardrails=[
-#         InputGuardrail(guardrail_function=homework_guardrail),
-#     ],
+#     instructions=TRIAGENT_INSTRUCTION,
+#     handoffs=[history_tutor_agent, math_tutor_agent]
 # )
+
+
+# masih error
+triage_agent = Agent(
+    name="Triage Agent",
+    instructions=TRIAGENT_INSTRUCTION,
+    handoffs=[history_tutor_agent, math_tutor_agent],
+    model=groq_model,
+    model_settings=model_settings,
+    input_guardrails=[
+        InputGuardrail(guardrail_function=homework_guardrail),
+    ],
+)

@@ -10,8 +10,8 @@ async def main():
     #     if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
     #         print(event.data.delta, end="", flush=True)
     
-    result = await Runner.run(triage_agent, "Siapa presiden ke 3 indonesia?")
-    print(result.final_output)
+    # result = await Runner.run(triage_agent, "Siapa presiden ke 3 indonesia?")
+    # print(result.final_output)
     print("="*30)
     result = await Runner.run(triage_agent, "what is life")
     print(result.final_output)
