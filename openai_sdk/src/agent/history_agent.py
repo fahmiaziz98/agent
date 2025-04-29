@@ -1,5 +1,9 @@
-from agents import Agent
-from src.llm_groq import groq_model, model_settings
+from agents import Agent, ModelSettings
+from src.llm.llm_model import create_litellm_model
+from src.utils.constant import GROQ_API_KEY, GROQ_BASE_URL
+
+llm_model = create_litellm_model(base_url=GROQ_BASE_URL, api_key=GROQ_API_KEY)
+model_settings = ModelSettings(temperature=0.7, max_tokens=4096)
 
 HISTORY_TUTOR_AGENT = (
     "You are a history tutor providing assistance with historical queries. "
@@ -11,7 +15,7 @@ HISTORY_TUTOR_AGENT = (
 
 history_tutor_agent = Agent(
     name="History Tutor",
-    model=groq_model,
+    model=llm_model,
     model_settings=model_settings,
     handoff_description="Specialist agent for historical questions",
     instructions=HISTORY_TUTOR_AGENT

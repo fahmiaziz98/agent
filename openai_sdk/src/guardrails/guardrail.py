@@ -1,13 +1,15 @@
 from agents import Agent, Runner, GuardrailFunctionOutput
-from src.models import HomeworkOutput
-from src.llm_groq import groq_model, model_settings
+from src.utils.models import HomeworkOutput
+from src.llm.llm_model import create_litellm_model
+from src.utils.constant import GROQ_API_KEY, GROQ_BASE_URL
+
+model = create_litellm_model(base_url=GROQ_BASE_URL, api_key=GROQ_API_KEY, model_name="meta-llama/llama-4-scout-17b-16e-instruct")
 
 guardrail_agent = Agent(
     name="Guardrail check",
     instructions="Check if the user is asking about homework.",
     output_type=HomeworkOutput,
-    model=groq_model,
-    model_settings=model_settings,
+    model=model,
 )
 
 

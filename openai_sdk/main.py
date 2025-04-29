@@ -1,6 +1,6 @@
 from openai.types.responses import ResponseTextDeltaEvent
 from agents import Runner
-from src.agent import triage_agent
+from src.agent.triagent import triage_agent
 
 
 async def main():
@@ -10,10 +10,10 @@ async def main():
     #     if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
     #         print(event.data.delta, end="", flush=True)
     
-    # result = await Runner.run(triage_agent, "Siapa presiden ke 3 indonesia?")
-    # print(result.final_output)
+    result = await Runner.run(triage_agent, "Siapa presiden ke 3 indonesia?")
+    print(result.final_output)
     print("="*30)
-    result = await Runner.run(triage_agent, "what is life")
+    result = await Runner.run(triage_agent, "Beri saya Joke gelap!")
     print(result.final_output)
 
 if __name__ == "__main__":

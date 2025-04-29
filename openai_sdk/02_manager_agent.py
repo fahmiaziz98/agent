@@ -1,6 +1,10 @@
 import asyncio
-from agents import Agent, ItemHelpers, MessageOutputItem, Runner, trace
-from src.llm_groq import groq_model, model_settings
+from agents import Agent, ModelSettings, ItemHelpers, MessageOutputItem, Runner, trace
+from src.llm.llm_model import create_litellm_model
+from src.utils.constant import GROQ_API_KEY, GROQ_BASE_URL
+
+groq_model = create_litellm_model(base_url=GROQ_BASE_URL, api_key=GROQ_API_KEY)
+model_settings = ModelSettings(temperature=0.1, max_tokens=4096)
 
 """
 This example shows the agents-as-tools pattern. The frontline agent receives a user message and
@@ -65,21 +69,21 @@ synthesizer_agent = Agent(
 
 
 async def main():
-    msg = input("Hi! What would you like translated, and to which languages? ")
-
+    msg = "Hello, how are you? I want to translate this message to Spanish, French, and Italian."
+    print(f"User message: {msg}")
     # Run the entire orchestration in a single trace
-    with trace("Orchestrator evaluator"):
-        orchestrator_result = await Runner.run(orchestrator_agent, msg)
+    # with trace("Orchestrator evaluator"):
+    orchestrator_result = await Runner.run(orchestrator_agent, msg)
 
-        for item in orchestrator_result.new_items:
-            if isinstance(item, MessageOutputItem):
-                text = ItemHelpers.text_message_output(item)
-                if text:
-                    print(f"  - Translation step: {text}")
+    #     for item in orchestrator_result.new_items:
+    #         if isinstance(item, MessageOutputItem):
+    #             text = ItemHelpers.text_message_output(item)
+    #             if text:
+    #                 print(f"  - Translation step: {text}")
 
-        synthesizer_result = await Runner.run(
-            synthesizer_agent, orchestrator_result.to_input_list()
-        )
+    synthesizer_result = await Runner.run(
+        synthesizer_agent, orchestrator_result.to_input_list()
+    )
 
     print(f"\n\nFinal response:\n{synthesizer_result.final_output}")
 
