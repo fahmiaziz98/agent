@@ -1,5 +1,5 @@
 
-# Agents Framework
+# AI Agents
 
 This repository contains learning materials and implementations for building agents from scratch or using frameworks such as LangGraph, LangChain, Crew AI, and others. The main focus of this repository is on agent evaluation, writing effective prompts, token optimization, caching, and integration with various APIs. This repository will be continuously updated over time.
 
