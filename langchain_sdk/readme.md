@@ -38,7 +38,7 @@ langchain_sdk/
 ## How to Run
 First, navigate to the `langchain_sdk` directory:
 ```bash
-cd langchain_sdks
+cd langchain_sdk
 ```
 
 ### 1. Ingest Data
