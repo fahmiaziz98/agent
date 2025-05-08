@@ -81,38 +81,37 @@ def get_weather(city: str) -> str:
         f"- UV Index: {uv_index}/10\n"
         f"- Sunrise: {sunrise}, Sunset: {sunset}"
     )
-
+@tool()
 def tavily_search(
         query: str, 
         fetch_full_page: bool = True, 
         max_results: int = 3
     ) -> Dict[str, List[Dict[str, Any]]]:
     """
-    Search the web using the Tavily API and return formatted results.
+    Use tools when user asks for information that is not in the knowledge base.
     
-    Uses the TavilyClient to perform searches. Tavily API key must be configured
-    in the environment.
-    
-    Args:
-        query (str): The search query to execute
-        fetch_full_page (bool, optional): Whether to include raw content from sources.
+    Parameters:
+        - query (str): The search query to execute
+        - fetch_full_page (bool, optional): Whether to include raw content from sources.
                                          Defaults to True.
-        max_results (int, optional): Maximum number of results to return. Defaults to 3.
-        
-    Returns:
-        Dict[str, List[Dict[str, Any]]]: Search response containing:
-            - results (list): List of search result dictionaries, each containing:
-                - title (str): Title of the search result
-                - url (str): URL of the search result
-                - content (str): Snippet/summary of the content
-                - raw_content (str or None): Full content of the page if available and 
-                                            fetch_full_page is True
+        - max_results (int, optional): Maximum number of results to return. Defaults to 3.
     """
      
     tavily_client = TavilyClient(api_key=os.getenv('TAVILY_API_KEY'))
-    return tavily_client.search(query, 
-                         max_results=max_results, 
-                         include_raw_content=fetch_full_page)
+    result = tavily_client.search(
+        query, 
+        max_results=max_results, 
+        include_raw_content=fetch_full_page
+    )
+    if not result:
+        return "Sorry, I couldn't find any relevant information."
+    clean_raw_response = deduplicate_and_format_sources(result, max_tokens_per_source=4096, fetch_full_page=fetch_full_page)
+    source = format_sources(result)
+    return (
+        f"Raw Response: {clean_raw_response}\n"
+        f"Source:\n{source}"
+    )
+
 
 def deduplicate_and_format_sources(
     search_response: Union[Dict[str, Any], List[Dict[str, Any]]], 
@@ -195,13 +194,13 @@ def format_sources(search_results: Dict[str, Any]) -> str:
         for source in search_results['results']
     )
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Example usage
     # print(convert_currency(100, "USD", "EUR"))
     # print(get_weather("New York"))
-    result = tavily_search(query="Python programming", max_results=1)
-    search_str = deduplicate_and_format_sources(result, max_tokens_per_source=100, fetch_full_page=True)
-    formatted_sources = format_sources(result)
-    print(formatted_sources)
-    print("="*30)
-    print(search_str)
+    # result = tavily_search(query="Python programming", max_results=1)
+    # search_str = deduplicate_and_format_sources(result, max_tokens_per_source=4096, fetch_full_page=True)
+    # formatted_sources = format_sources(result)
+    # print(formatted_sources)
+    # print("="*30)
+    # print(search_str)

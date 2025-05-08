@@ -240,15 +240,17 @@ class Agent:
             return f"Error executing plan: {str(e)}"
             
 def main():
-    from tools import convert_currency, get_weather
+    from tools import convert_currency, get_weather, tavily_search
     
     agent = Agent()
     agent.add_tool(convert_currency)
     agent.add_tool(get_weather)
+    agent.add_tool(tavily_search)
     query_list = [
         "Saya akan traveling ke jepang, saya memiliki 100000 rupiah, berapa yen saya akan dapat?",
         "I am traveling to Japan from Serbia, I have 1500 of local currency, how much of Japaese currency will I be able to get?",
-        "Cuaca Tokyo hari ini"
+        "Cuaca Tokyo hari ini",
+        "Search article about traveling to Japan",
     ]
     
     for query in query_list:
