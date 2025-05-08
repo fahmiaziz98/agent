@@ -15,9 +15,9 @@ This project provides a framework for building and running agents using Groq and
 ```
 agent_tools/
 ├── src/
-│   ├── main.py           # Main script to run the agent framework
 │   ├── tool_registry.py  # Tool registration and metadata
 │   ├── tools.py          # Tool definitions (e.g., currency conversion, weather)
+├── main.py               # Main script to run the agent framework
 ├── readme.md             # Documentation for the agent tools
 ```
 
@@ -27,7 +27,7 @@ Navigate to the agent_tools directory and run the main script:
     ```bash
     cd agent_tools
 
-    uv run src/main.py
+    uv run main.py
     ```
 
 2. Example Queries

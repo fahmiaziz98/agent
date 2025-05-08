@@ -1,11 +1,11 @@
 import os
 import json
-import urllib.request
-from tool_registry import tool
-import requests
-from tavily import TavilyClient
 from typing import Dict, List, Any, Union
 from dotenv import load_dotenv, find_dotenv
+import requests
+import urllib.request
+from tavily import TavilyClient
+from src.tool_registry import tool
 
 load_dotenv(find_dotenv())
 
