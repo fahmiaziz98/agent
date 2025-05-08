@@ -1,8 +1,8 @@
 
-## Install Dependencies
-To enable support for other LLMs, install the required dependencies:
+## How to run
+First, navigate to the `openai_sdk` directory:
 ```bash
-uv pip install "openai-agents[litellm]"
+cd openai_sdk
 ```
 
 ### Run Manager Agent
