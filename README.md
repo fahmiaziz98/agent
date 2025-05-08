@@ -50,39 +50,6 @@ You can obtain the API keys from the following services:
 - **Tavily**: [Tavily API](https://app.tavily.com/home)
 - **SerpAPI**: [SerpAPI](https://serpapi.com/)
 
-## How to Run
-
-### 1. Run the Agent Framework
-Use the following command to run the framework:
-```bash
-uv run src/main.py
-```
-
-### 2. Example Queries
-The framework supports various queries, such as:
-- **Currency Conversion**: "Convert 100 USD to EUR"
-- **Weather Information**: "What is the weather in Tokyo today?"
-- **Web Search**: "Search article about traveling to Japan"
-
-## Folder Structure
-```
-agent/
-├── src/
-│   ├── main.py            # Main script to run the framework
-│   ├── tool_registry.py   # Tool registration and metadata
-│   ├── tools.py           # Tool definitions (e.g., currency conversion, weather)
-├── README.md              # Project documentation
-├── requirements.txt       # Python dependencies
-└── .env                   # Environment variables
-```
-
-## References
-- [Groq Documentation](https://console.groq.com/docs/overview)
-- [WeatherStack API](https://weatherstack.com/)
-- [Tavily API](https://app.tavily.com/home)
-- [SerpAPI](https://serpapi.com/)
-
-
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
